@@ -1,0 +1,59 @@
+.header{
+    width: 100%;
+    height: 65px;
+    /* border: 1px solid red; */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding:0 30px;
+    position: sticky;
+    top: 0;
+    background-color: white;
+}
+.blackheader{
+    background-color: #8f8f8f;
+    transition: all 600ms;
+}
+.header-heading{
+    font-family: "Josefin Sans", sans-serif;
+    font-weight: 400;
+}
+.header-btn{
+    display: flex;
+    gap: 10px;
+}
+.header-start-selling{
+    background-color: #000;
+    border-radius: 50px;
+    color: white;
+    padding: 10px 30px;
+    height: 40px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+.login-header-btn{
+    background-color: white;
+    border: 1px solid black;
+    padding: 5px 40px;
+    height: 39px;
+    cursor: pointer;
+    color: #000;
+    border-radius: 50px;
+    transition: all 300ms;
+}
+.login-header-btn:hover{
+    background-color: black;
+    color: white;
+}
+@media (max-width:520px){
+    .login-header-btn{
+        display: none;
+    }
+    .header-start-selling{
+        padding: 5px 16px;
+    }
+
+    .header-heading{
+        font-size: 16px;
+    }
+}

@@ -1,0 +1,61 @@
+.sellerguide{
+    width: 80%;
+    /* border: 1px solid red; */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    padding-bottom: 30px;
+    
+    
+}
+.heading-seller-guide{
+    font-family: "josephin Sans",sans-serif;
+    font-weight: 900;
+    
+}
+.steps{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    
+
+}
+.step-div{
+    /* border: 1px solid black; */
+    width: 25vw;
+    gap: 10px;
+    height: 180px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #d9d9d9;
+    border-radius: 10px;
+    
+
+}
+.steps-heading{
+    font-size: 23px;
+    font-family: "josephin Sans",sans-serif;
+    font-weight: 760;
+}
+.step-pata{
+    font-family: "josephin Sans",sans-serif;
+    font-size: 15px;
+    color: rgb(75, 75, 75);
+}
+@media (max-width:520px){
+    .sellerguide{
+        width: 100%;
+    }
+    .steps{
+        flex-direction: column;
+    }
+    .step-div{
+        width: 80%;
+        height: min-content;
+    }
+}
