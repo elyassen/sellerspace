@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import Sellerlogo from "./static/Sellerlogo.svg";
 
 import "./hero.css";
 function Hero() {
@@ -20,7 +21,7 @@ function Hero() {
         </p>
       </div>
       <div className="right-hero">
-        <h1>LOGO</h1>
+        <img src={Sellerlogo} alt="img" />
       </div>
     </div>
   );

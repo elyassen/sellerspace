@@ -1,13 +1,27 @@
 import React, { useState } from "react";
 import "./signup.css";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { addUser } from "../slices/userSlice";
 
 function Signup() {
   const [signupLoading, setSignupLoading] = useState(false);
   const [disablebtn, setDisable] = useState(true);
   const [count, setCount] = useState(0);
   const [verified, setVerified] = useState(false);
+  const dispatch = useDispatch();
+  const [passwordMatch, setPasswordmatch] = useState(false);
+  const navigate = useNavigate();
+  const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState([
-    { name: "", email: "", phone: "", address: "", dob: "", password: "" },
+    {
+      Name: "",
+      mail: "",
+      phone: "",
+      address: "",
+      dob: "",
+      password: "",
+    },
   ]);
   const [repassword, setRepassword] = useState("");
   const handleclick = () => {
@@ -19,29 +33,36 @@ function Signup() {
   const handleOtp = () => {
     setVerified(true);
   };
-  const handleSignup = () => {
-    setSignupLoading(true);
-    setTimeout(() => {
-      setCount(4);
-    }, 3000);
-  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setUserData((prevData) => ({ ...prevData, [name]: value }));
+    setUserData({ ...userData, [name]: value });
   };
   const handlepassword = (e) => {
     const { value } = e.target;
     setRepassword(value);
     if (userData.password === value) {
       setDisable(false);
-      console.log("password match");
+      setPasswordmatch(true);
     } else {
       console.log("password didnt match");
       setDisable(true);
     }
   };
-  console.log(userData);
 
+  const handleSignup = () => {
+    setSignupLoading(true);
+    const { email, password } = userData;
+
+    setTimeout(() => {
+      dispatch(addUser(userData));
+      setCount(4);
+    }, 3000);
+  };
+  console.log(userData);
+  const toProducts = () => {
+    navigate("/addproducts");
+  };
   return (
     <div className="signup">
       <div className="signupwrapper">
@@ -69,6 +90,7 @@ function Signup() {
                 className="input-1"
                 type="text"
               />
+              <p className="valid-email"> Enter valid email</p>
             </div>
             <button onClick={() => setCount(count + 1)} className="otp-btn">
               Send OTP
@@ -133,7 +155,7 @@ function Signup() {
                 name="password"
                 onChange={handleChange}
                 value={userData.password}
-                type="text"
+                type="password"
                 className="input-1"
               />
             </div>
@@ -142,13 +164,22 @@ function Signup() {
               <input
                 value={repassword}
                 onChange={handlepassword}
-                type="text"
+                type="password"
                 className="input-1"
               />
+              {passwordMatch ? (
+                <p className="password-match">password matched click Sign up</p>
+              ) : (
+                <p className="password-match">password didnot match</p>
+              )}
             </div>
-            <div onClick={handleSignup} className="signup-btn">
+            <div className="signup-btn">
               {!signupLoading ? (
-                <button disabled={disablebtn} className="signup-btn-inside">
+                <button
+                  onClick={handleSignup}
+                  disabled={disablebtn}
+                  className="signup-btn-inside"
+                >
                   Sign up
                 </button>
               ) : (
@@ -159,8 +190,11 @@ function Signup() {
         )}
         {count == 4 && (
           <div className="complete">
+            <h2>Congratulations</h2>
             <h3 className="completed-heading">Account created!!</h3>
-            <button className="list">List Your Products</button>
+            <button onClick={toProducts} className="list">
+              List Your Products
+            </button>
           </div>
         )}
       </div>
