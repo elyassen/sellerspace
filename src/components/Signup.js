@@ -15,12 +15,12 @@ function Signup() {
   const user = useSelector((state) => state.user);
   const [userData, setUserData] = useState([
     {
-      Name: "",
-      mail: "",
-      phone: "",
-      address: "",
-      dob: "",
-      password: "",
+      s_name: null,
+      s_email: null,
+      s_phone: null,
+      s_address: null,
+      s_dob: null,
+      s_password: null,
     },
   ]);
   const [repassword, setRepassword] = useState("");
@@ -33,15 +33,10 @@ function Signup() {
   const handleOtp = () => {
     setVerified(true);
   };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUserData({ ...userData, [name]: value });
-  };
   const handlepassword = (e) => {
     const { value } = e.target;
     setRepassword(value);
-    if (userData.password === value) {
+    if (userData.s_password === value) {
       setDisable(false);
       setPasswordmatch(true);
     } else {
@@ -50,16 +45,23 @@ function Signup() {
     }
   };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setUserData({ ...userData, [name]: value });
+  };
+
   const handleSignup = () => {
     setSignupLoading(true);
-    const { email, password } = userData;
+    const { s_email, s_address, s_dob, s_name } = userData;
+    const newUser = { s_email, s_address, s_dob, s_name };
 
     setTimeout(() => {
-      dispatch(addUser(userData));
+      dispatch(addUser(newUser));
       setCount(4);
     }, 3000);
   };
-  console.log(userData);
+
+  // console.log(userData);
   const toProducts = () => {
     navigate("/addproducts");
   };
@@ -74,8 +76,8 @@ function Signup() {
             <div className="input-section">
               <h4>Name</h4>
               <input
-                name="name"
-                value={userData.name}
+                name="s_name"
+                value={userData.s_name}
                 onChange={handleChange}
                 className="input-1"
                 type="text"
@@ -84,8 +86,8 @@ function Signup() {
             <div className="input-section">
               <h4>Email</h4>
               <input
-                name="email"
-                value={userData.email}
+                name="s_email"
+                value={userData.s_email}
                 onChange={handleChange}
                 className="input-1"
                 type="text"
@@ -115,9 +117,9 @@ function Signup() {
             <div className="input-3">
               <h4>Phone</h4>
               <input
-                name="phone"
+                name="s_phone"
                 onChange={handleChange}
-                value={userData.phone}
+                value={userData.s_phone}
                 className="input-1"
                 type="text"
               />
@@ -125,9 +127,9 @@ function Signup() {
             <div className="input-3">
               <h4>Address</h4>
               <input
-                name="address"
+                name="s_address"
                 onChange={handleChange}
-                value={userData.address}
+                value={userData.s_address}
                 className="input-1"
                 type="text"
               />
@@ -135,9 +137,9 @@ function Signup() {
             <div className="input-3">
               <h4>Date of birth</h4>
               <input
-                name="dob"
+                name="s_dob"
                 onChange={handleChange}
-                value={userData.dob}
+                value={userData.s_dob}
                 className="input-1"
                 type="date"
               />
@@ -152,9 +154,9 @@ function Signup() {
             <div className="input-4">
               <h4>Password</h4>
               <input
-                name="password"
+                name="s_password"
                 onChange={handleChange}
-                value={userData.password}
+                value={userData.s_password}
                 type="password"
                 className="input-1"
               />
