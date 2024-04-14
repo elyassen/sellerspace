@@ -10,7 +10,8 @@ function Header() {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
-  const [loginInfo, setloginInfo] = useState({ email: "", password: "" });
+  const [loginInfo, setloginInfo] = useState({ email: "", s_password: "" });
+  const [error, setError] = useState(null);
   const navigate = useNavigate();
   useEffect(() => {
     window.addEventListener("scroll", () => {
@@ -28,17 +29,39 @@ function Header() {
   const handlehome = () => {
     navigate("/");
   };
+  const closeLogin = () => {
+    setLogin(false);
+    setError(null);
+  };
   const handleChange = (e) => {
     const { name, value } = e.target;
     setloginInfo({ ...loginInfo, [name]: value });
   };
   const submitLogin = () => {
-    setLoading(true);
-    setTimeout(() => {
+    setLoading(!loading);
+    setTimeout(async () => {
+      const req = await fetch("http://localhost:3001/login", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(loginInfo),
+      });
+      if (req.status == 200) {
+        console.log("logged in");
+        const res = await req.json();
+        setLoading(true);
+        dispatch(addUser(res));
+
+        setLogin(!login);
+        setloginInfo({ email: "", s_password: "" });
+      }
+      if (req.status == 401) {
+        setLoading(false);
+        setError("invalid credentials");
+      }
       setLoading(false);
-      setLogin(false);
-      dispatch(addUser(loginInfo));
-    }, 3000);
+    }, 1);
   };
   const logoutuser = () => {
     dispatch(removeUser());
@@ -59,14 +82,14 @@ function Header() {
           </button>
         </div>
       ) : (
-        <h1 onClick={logoutuser} className="user-name">
-          {user?.email}
-        </h1>
+        <div onClick={logoutuser} className="user-logged-in">
+          {user?.s_name.substring(0, 1)}
+        </div>
       )}
       {login && (
         <div className="login-div">
           <div className="login-input">
-            <h1 onClick={() => setLogin(false)} className="close-login">
+            <h1 onClick={closeLogin} className="close-login">
               close{" "}
             </h1>
             <h4 className="login-text">Email</h4>
@@ -81,12 +104,13 @@ function Header() {
             <h4 className="login-text">Password</h4>
             <input
               value={loginInfo.password}
-              name="password"
+              name="s_password"
               onChange={handleChange}
               type="text"
             />
           </div>
           <p className="forgot">Forgot password?</p>
+          {error && <p className="error">{error}</p>}
           <button onClick={submitLogin} className="login-btn">
             {loading ? <div className="loading"></div> : <p>login</p>}
           </button>

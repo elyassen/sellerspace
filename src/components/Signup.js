@@ -16,7 +16,7 @@ function Signup() {
   const [userData, setUserData] = useState([
     {
       s_name: null,
-      s_email: null,
+      email: null,
       s_phone: null,
       s_address: null,
       s_dob: null,
@@ -52,23 +52,50 @@ function Signup() {
 
   const handleSignup = () => {
     setSignupLoading(true);
-    const { s_email, s_address, s_dob, s_name } = userData;
-    const newUser = { s_email, s_address, s_dob, s_name };
+    // const { email, s_address, s_dob, s_name, s_password, s_phone } = userData;
+    // const newUser = {
+    //   email,
+    //   s_address,
+    //   s_dob,
+    //   s_name,
+    //   s_password,
+    //   s_password,
+    //   s_phone,
+    // };
+    signupUserBackend(userData);
 
     setTimeout(() => {
-      dispatch(addUser(newUser));
       setCount(4);
     }, 3000);
   };
 
+  const signupUserBackend = async (user) => {
+    try {
+      const req = await fetch("http://localhost:3001/addseller", {
+        method: "post",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
+      if (req.ok) {
+        dispatch(addUser(user));
+        // toProducts();
+        console.log("user saved");
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
   // console.log(userData);
-  const toProducts = () => {
-    navigate("/addproducts");
+  const tohome = () => {
+    navigate("/");
   };
   return (
     <div className="signup">
       <div className="signupwrapper">
-        <h1 className={`${count == 4 && "hide-heading"} heading-signup`}>
+        <h1 className={`${count === 4 && "hide-heading"} heading-signup`}>
           Sign up
         </h1>
         {count == 0 && (
@@ -86,8 +113,8 @@ function Signup() {
             <div className="input-section">
               <h4>Email</h4>
               <input
-                name="s_email"
-                value={userData.s_email}
+                name="email"
+                value={userData.email}
                 onChange={handleChange}
                 className="input-1"
                 type="text"
@@ -100,7 +127,7 @@ function Signup() {
             <p className="member"> Already a seller? login</p>
           </div>
         )}
-        {count == 1 && (
+        {count === 1 && (
           <div className="otp-section">
             <h4 className="otp-heading">verify OTP</h4>
             <input className="otp-field" type="text" />
@@ -112,7 +139,7 @@ function Signup() {
             </p>
           </div>
         )}
-        {count == 2 && (
+        {count === 2 && (
           <div className="section-3">
             <div className="input-3">
               <h4>Phone</h4>
@@ -149,7 +176,7 @@ function Signup() {
             </button>
           </div>
         )}
-        {count == 3 && (
+        {count === 3 && (
           <div className="section-3">
             <div className="input-4">
               <h4>Password</h4>
@@ -194,7 +221,7 @@ function Signup() {
           <div className="complete">
             <h2>Congratulations</h2>
             <h3 className="completed-heading">Account created!!</h3>
-            <button onClick={toProducts} className="list">
+            <button onClick={tohome} className="list">
               List Your Products
             </button>
           </div>
