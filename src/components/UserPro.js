@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./userpro.css";
 import { useSelector } from "react-redux";
+import { BASE_URL } from "./utils";
 function UserPro() {
   const user = useSelector((State) => State.user);
   const [productDetails, setProductDetails] = useState({
@@ -48,14 +49,14 @@ function UserPro() {
   };
   const submitProducts = async () => {
     try {
-      const req = await fetch("http://localhost:3001/product", {
+      const req = await fetch(`${BASE_URL}/product`, {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(datatoBackend),
       });
-      if (req.status == 200) {
+      if (req.status == 201) {
         const res = await req.json();
         console.log(res);
         clearData();
@@ -83,7 +84,7 @@ function UserPro() {
 
   async function getProducts() {
     try {
-      const req = await fetch("http://localhost:3001/sellerlist", {
+      const req = await fetch(`${BASE_URL}/sellerlist`, {
         method: "post",
         headers: {
           "content-type": "application/json",

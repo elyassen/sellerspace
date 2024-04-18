@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "./header.css";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "./utils";
 import { addUser, removeUser } from "../slices/userSlice";
 import { UseSelector, useDispatch, useSelector } from "react-redux";
 
@@ -40,7 +41,7 @@ function Header() {
   const submitLogin = () => {
     setLoading(!loading);
     setTimeout(async () => {
-      const req = await fetch("http://localhost:3001/login", {
+      const req = await fetch(`${BASE_URL}/login`, {
         method: "post",
         headers: {
           "content-type": "application/json",
@@ -74,7 +75,10 @@ function Header() {
       </h2>
       {!user?.email ? (
         <div className="header-btn">
-          <button onClick={handleclick} className="header-start-selling">
+          <button
+            onClick={handleclick}
+            className="header-start-selling signup-btn-header"
+          >
             Sign Up
           </button>
           <button onClick={() => setLogin(true)} className="login-header-btn">
@@ -106,7 +110,7 @@ function Header() {
               value={loginInfo.password}
               name="s_password"
               onChange={handleChange}
-              type="text"
+              type="password"
             />
           </div>
           <p className="forgot">Forgot password?</p>

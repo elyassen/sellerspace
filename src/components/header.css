@@ -43,6 +43,7 @@
     border-radius: 50px;
     transition: all 300ms;
 }
+
 .login-header-btn:hover{
     background-color: black;
     color: white;
@@ -132,10 +133,26 @@
 
 @media (max-width:520px){
     .login-header-btn{
-        display: none;
+        /* display: none; */
+        font-weight: 600;
+        font-size: 13px;
+        padding: 6px 28px;
     }
     .header-start-selling{
         padding: 5px 16px;
+    }
+    .signup-btn-header{
+        display: none;
+    }
+    .login-div{
+        width: 80vw;
+        
+        /* height: 35vh; */
+        align-items: center;
+        justify-content: center;
+        top: 50vh;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
 
     .header-heading{

@@ -3,11 +3,13 @@ import "./signup.css";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { addUser } from "../slices/userSlice";
+import { BASE_URL } from "./utils";
 
 function Signup() {
   const [signupLoading, setSignupLoading] = useState(false);
   const [disablebtn, setDisable] = useState(true);
   const [count, setCount] = useState(0);
+  const [msg, setMsg] = useState(null);
   const [verified, setVerified] = useState(false);
   const dispatch = useDispatch();
   const [passwordMatch, setPasswordmatch] = useState(false);
@@ -52,36 +54,31 @@ function Signup() {
 
   const handleSignup = () => {
     setSignupLoading(true);
-    // const { email, s_address, s_dob, s_name, s_password, s_phone } = userData;
-    // const newUser = {
-    //   email,
-    //   s_address,
-    //   s_dob,
-    //   s_name,
-    //   s_password,
-    //   s_password,
-    //   s_phone,
-    // };
     signupUserBackend(userData);
-
-    setTimeout(() => {
-      setCount(4);
-    }, 3000);
   };
 
   const signupUserBackend = async (user) => {
     try {
-      const req = await fetch("http://localhost:3001/addseller", {
+      const req = await fetch(`${BASE_URL}/addseller`, {
         method: "post",
         headers: {
           "content-type": "application/json",
         },
         body: JSON.stringify(user),
       });
-      if (req.ok) {
+      if (req.status === 400) {
+        setCount(0);
+        const res = await req.json();
+        handleSignupErr(res);
+        console.log("hello 400");
+        setSignupLoading(false);
+      }
+      if (req.status === 200) {
         dispatch(addUser(user));
-        // toProducts();
-        console.log("user saved");
+        console.log("user signuped");
+        setTimeout(() => {
+          setCount(3);
+        }, 3000);
       }
     } catch (e) {
       console.log(e);
@@ -92,12 +89,17 @@ function Signup() {
   const tohome = () => {
     navigate("/");
   };
+  function handleSignupErr(res) {
+    setMsg(res.msg);
+  }
+
   return (
     <div className="signup">
       <div className="signupwrapper">
         <h1 className={`${count === 4 && "hide-heading"} heading-signup`}>
           Sign up
         </h1>
+        {msg && <h5 className="err-msg">{msg}</h5>}
         {count == 0 && (
           <div className="section-1">
             <div className="input-section">
@@ -122,12 +124,11 @@ function Signup() {
               <p className="valid-email"> Enter valid email</p>
             </div>
             <button onClick={() => setCount(count + 1)} className="otp-btn">
-              Send OTP
+              Next
             </button>
-            <p className="member"> Already a seller? login</p>
           </div>
         )}
-        {count === 1 && (
+        {/* {count === 1 && (
           <div className="otp-section">
             <h4 className="otp-heading">verify OTP</h4>
             <input className="otp-field" type="text" />
@@ -138,8 +139,8 @@ function Signup() {
               Want to change email
             </p>
           </div>
-        )}
-        {count === 2 && (
+        )} */}
+        {count === 1 && (
           <div className="section-3">
             <div className="input-3">
               <h4>Phone</h4>
@@ -176,7 +177,7 @@ function Signup() {
             </button>
           </div>
         )}
-        {count === 3 && (
+        {count === 2 && (
           <div className="section-3">
             <div className="input-4">
               <h4>Password</h4>
@@ -217,7 +218,7 @@ function Signup() {
             </div>
           </div>
         )}
-        {count == 4 && (
+        {count == 3 && (
           <div className="complete">
             <h2>Congratulations</h2>
             <h3 className="completed-heading">Account created!!</h3>

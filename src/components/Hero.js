@@ -20,9 +20,9 @@ function Hero() {
           Get started in just 15 mins and enjoy seamless access to our services
         </p>
       </div>
-      <div className="right-hero">
+      {/* <div className="right-hero">
         <img src={Sellerlogo} alt="img" />
-      </div>
+      </div> */}
     </div>
   );
 }
